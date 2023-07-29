@@ -76,6 +76,25 @@ class DBStorage:
         """Commits the session changes to database"""
         self.__session.commit()
 
+    def get(self, cls, id):
+        '''
+            Retrieve one object
+        '''
+        obj_list = self.__session.query(eval(cls)).all()
+        for obj in obj_list:
+            if obj.id == str(id):
+                return obj
+        return None
+
+    def count(self, cls=None):
+        '''
+           Count the number of objects in storage
+        '''
+        count = 0
+        class_dict = self.all(cls)
+        count = len(class_dict)
+        return count
+
     def reload(self):
         """Loads storage database"""
         Base.metadata.create_all(self.__engine)
